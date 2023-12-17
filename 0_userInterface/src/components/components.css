@@ -1,0 +1,52 @@
+/* Reset default styles and add some basic styling */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Style the navbar */
+.navbar {
+  background-color: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+#s {
+  justify-content: center;
+  height: 50px;
+}
+/* Style the logo */
+.logo a {
+  color: #fff;
+  font-size: 24px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Style the navigation links */
+.nav-links {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+/* Style the list items */
+.nav-links li {
+  margin-right: 20px;
+}
+
+/* Style the links within the list items */
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+/* Change link color on hover */
+.nav-links a:hover {
+  color: #ff9900;
+}

@@ -1,0 +1,180 @@
+import React, { useEffect, useRef, useState } from "react";
+import Wrapper from "../asserts/wrapper/AddBook";
+import { Form, redirect, useLoaderData, useParams } from "react-router-dom";
+import customFetch from "../../utils/customFetch";
+import { toast } from "react-toastify";
+import FormRow from "../components/FormRow.jsx";
+import FormRowSelect from "../components/FormRowSelect.jsx";
+import SubmitBtn from "../components/SubmitBtn.jsx";
+import { BOOK_CATEGORIES,BOOK_SUBCATEGORIES } from "../../../utils/constant.js";
+
+
+ export const action = async ({ request, params }) => {
+   const formData = await request.formData();
+   const data = Object.fromEntries(formData);
+   try {
+     await customFetch.patch(`/books/${params.id}`, data);
+     toast.success("Book is updated successfully");
+   } catch (error) {
+     toast.error(error?.response?.data?.error[0]?.msg);
+     console.log(error);
+     return error;
+   }
+ };
+
+ export const loader = async ({ params }) => {
+   try {
+     const { data } = await customFetch.get(`/books/${params.id}`);
+     console.log(data);
+     return data;
+   } catch (error) {
+     toast.error(error?.response?.data?.error[0]?.msg);
+     console.log(error);
+     return error;
+   }
+ };
+
+
+const EditBook = () => {
+  const data = useLoaderData();
+  const [file,setFile] = useState(null)
+  const handleFileEvent =(event)=>{
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile)
+  }
+
+  useEffect(()=>{
+    setFile(null)
+  },[])
+//   const fileInputRef = useRef(null);
+//  useEffect(() => {
+//    if (fileInputRef.current) {
+//      fileInputRef.current.value = "";
+//    }
+//  }, []);
+  return (
+    <>
+      <Wrapper>
+        <div className="addBooks_main">
+          <div className="form_addBook">
+            <Form method="post" className="form" encType="multipart/form-data">
+              <h2 className="page-heading">Edit Book</h2>
+              <div className="form-center parent">
+                <div className="child#1">
+                  <FormRow
+                    type="text"
+                    name="bookName"
+                    labelText="Book Name"
+                    defaultValue={data.book.bookName}
+                  />
+                </div>
+                <div className="child#2">
+                  <FormRow
+                    type="number"
+                    name="bookPage"
+                    labelText="Pages"
+                    defaultValue={data.book.bookPage}
+                  />
+                </div>
+                <div className="child#3">
+                  <FormRow
+                    type="text"
+                    name="bookAuthor"
+                    labelText="Book Author"
+                    defaultValue={data.book.bookAuthor}
+                  />
+                </div>
+                <div className="child#4">
+                  <FormRow
+                    type="text"
+                    name="ISBNNumber"
+                    labelText="ISBN Number"
+                    defaultValue={data.book.ISBNNumber}
+                  />
+                </div>
+                <div className="child#5">
+                  <FormRow
+                    type="text"
+                    name="publication"
+                    labelText="Publication"
+                    defaultValue={data.book.publication}
+                  />
+                </div>
+                <div className="child#6">
+                  <FormRow
+                    type="text"
+                    name="recommendedBy"
+                    labelText="Recommended By"
+                    defaultValue={data.book.recommendedBy}
+                  />
+                </div>
+                <div className="child_7">
+                  <FormRow
+                    type="text"
+                    name="link"
+                    labelText="Link"
+                    defaultValue={data.book.Link}
+                  />
+                </div>
+                <div className="child#8">
+                  <FormRowSelect
+                    type="text"
+                    labelText="Book Categories"
+                    name="bookCategory"
+                    list={Object.values(BOOK_CATEGORIES)}
+                  ></FormRowSelect>
+                </div>
+                <div className="child#9">
+                  <FormRowSelect
+                    type="text"
+                    labelText="Book Sub-Categories"
+                    name="bookSubCategory"
+                    list={Object.values(BOOK_SUBCATEGORIES)}
+                  ></FormRowSelect>
+                </div>
+                {/* <button onSubmit={onSubmit}>Submit</button> */}
+                {/* <div className="child" id="12">
+                <FormRow
+                  type="date"
+                  id="date"
+                  name="Start-Date"
+                  labelText="Starting Date"
+                ></FormRow>
+              </div>
+              <div className="child" id="13">
+                <FormRow
+                  type="date"
+                  id="date"
+                  name="Finish-Date"
+                  labelText="Finishing Date"
+                ></FormRow>
+              </div> */}
+                <div className="child#10">
+                  <FormRow
+                    type="textarea"
+                    name="bookDescription"
+                    labelText="Book Description"
+                    defaultValue={data.book.bookDescription}
+                  />
+                </div>
+                <div className="child#11">
+                  <FormRow
+                    type="file"
+                    name="bookImage"
+                    id="bookImage"
+                    accept="image/*"
+                    labelText="Book Image"
+                  ></FormRow>
+                </div>
+              </div>
+              <SubmitBtn />
+            </Form>
+          </div>
+          {/* <h3>{user.location}</h3> */}
+        </div>
+      </Wrapper>
+    </>
+  );
+};
+
+export default EditBook;
